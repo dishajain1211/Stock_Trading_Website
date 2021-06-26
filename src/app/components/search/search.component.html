@@ -1,0 +1,32 @@
+<div class="container">
+    <div style="height: 75px;"></div>
+    <div class="p-1 text-center">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <h1 style="font-size: 72px;"><b>STOCK SEARCH</b></h1>
+    </div>
+    <form [formGroup]="searchForm">
+        <div style="height: 30px;"></div>
+        <div class="mx-auto" style="width: 250px;">
+            <div class="input-group mb-3" style="border:2px solid #6f4ffb; border-radius: 20px; ">
+                <input type="text" [(ngModel)]="tickSymbol" class="form-control" id="ticker" formControlName="ticker" [matAutocomplete]="auto" placeholder="Enter Stock Name" style="border: 2px solid transparent; background-color: transparent;">
+
+                <mat-autocomplete class="centered" #auto="matAutocomplete" style="margin-left:20px;">
+                    <mat-option *ngIf="loadBool" class="is-loading">
+                        <mat-spinner diameter="35"></mat-spinner>
+                    </mat-option>
+                    <ng-container *ngIf="!loadBool">
+                        <mat-option *ngFor="let tick of tickers" [value]="tick.split(' | ')[0]">
+                            <ng-container>
+                                {{ tick }}
+                            </ng-container>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+
+                <div class="input-group-append">
+                    <button class="btn fa fa-search form-control-icon" type="submit" routerLink="/details" (click)="openDetailPage($event)" style="border: 1px solid transparent; background-color: transparent; color:#6f4ffb"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

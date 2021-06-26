@@ -1,0 +1,47 @@
+.form-group .form-control-icon {
+    line-height: 2.375rem;
+    z-index: 2;
+    text-align: right;
+    display: block;
+    pointer-events: none;
+    color: #aaa;
+    width: 2.375rem;
+    height: 2.375rem;
+}
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* remove focus from the input box on click */
+
+input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+/* spinner */
+
+.mat-progress-spinner circle,
+.mat-spinner {
+    stroke: #6f4ffb;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+::ng-deep #cdk-overlay-0 {
+    width: 180px !important;
+    margin-left: 20px !important;
+    margin-top: -7px !important;
+}

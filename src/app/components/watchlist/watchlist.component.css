@@ -1,0 +1,20 @@
+.green {
+    color: green
+}
+
+.red {
+    color: red
+}
+
+.grey {
+    color: black
+}
+
+.alert-dismissible {
+    padding-right: 2rem !important;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner {
+    stroke: #6f4ffb;
+}

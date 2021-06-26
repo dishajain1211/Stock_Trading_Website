@@ -1,0 +1,20 @@
+.modal-footer {
+    justify-content: normal !important;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner {
+    stroke: #6f4ffb;
+}
+
+.green {
+    color: green
+}
+
+.red {
+    color: red
+}
+
+.grey {
+    color: black
+}

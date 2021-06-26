@@ -1,0 +1,52 @@
+.bi-star-fill {
+    color: yellow;
+}
+
+.bi-caret-up-fill {
+    color: green;
+}
+
+.bi-caret-down-fill {
+    color: red;
+}
+
+.alert {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.green {
+    color: green
+}
+
+.red {
+    color: red
+}
+
+.grey {
+    color: black
+}
+
+.modal-footer {
+    justify-content: normal !important;
+}
+
+.news:hover {
+    cursor: pointer;
+}
+
+.share {
+    border-radius: 10px;
+    border: #eee solid 1px;
+    padding: 20px 30px;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner {
+    stroke: #6f4ffb;
+}
+
+#buttonFocus :focus {
+    border: powderblue;
+}

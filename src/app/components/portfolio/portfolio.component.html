@@ -1,0 +1,123 @@
+<div class="container">
+    <div style="height: 75px;"></div>
+
+    <div class="p-1 ">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <h1>My Portfolio</h1>
+        <br>
+    </div>
+    <div *ngIf="!isLoaded" class="is-loading" style="text-align:center; margin-top: 50px">
+        <mat-spinner diameter="50" style="display: inline;"></mat-spinner>
+    </div>
+    <div *ngIf="isLoaded">
+        <div class="alert alert-warning" *ngIf="empty" style="text-align: center; margin-top:30px">Currently you don't have any stock.
+        </div>
+
+        <div class="container" *ngFor="let portfolioL of portfolio; let i = index" style="margin-left: -10px;">
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="card-header" (click)="openDetailPage(portfolioL.ticker)">
+                    <h3 style="display: inline;">{{portfolioL.ticker}}</h3>
+                    <h4 style="display:inline; color: grey; margin-left:10px;">{{portfolioL.name}}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-6" style="padding-right: 8px; padding-left: 8px;">
+                                    <h6>Quantity:</h6>
+                                    <h6>Avg. Cost / Share:</h6>
+                                    <h6>Total Cost:</h6>
+                                </div>
+                                <div class="col-6" style="text-align: right; padding-right: 8px; padding-left: 8px;">
+                                    <h6>{{ portfolioL.quantity }}</h6>
+                                    <h6>{{ portfolioL.averageCost.toFixed(2) }}</h6>
+                                    <h6>{{ portfolioL.totalCost.toFixed(2) }}</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-6" style="padding-right: 8px; padding-left: 8px;">
+                                    <h6>Change:</h6>
+                                    <h6>Current Price:</h6>
+                                    <h6>Market Value:</h6>
+                                </div>
+                                <div class="col-6" style="text-align: right; padding-right: 8px; padding-left: 8px;" [ngClass]="(((portfolioL.last - portfolioL.prevClose).toFixed(2))==0)?'grey':(((portfolioL.last - portfolioL.prevClose).toFixed(2))<0)?'red':'green'">
+                                    <h6> <svg width="0.75em" height="0.75em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="((portfolioL.last - portfolioL.prevClose).toFixed(2))>0">
+                                        <path
+                                            d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                    </svg>
+                                        <svg width="0.75em" height="0.75em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="((portfolioL.last - portfolioL.prevClose).toFixed(2))<0">
+                                        <path
+                                            d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                    </svg> {{ (portfolioL.last - portfolioL.prevClose).toFixed(2) }}</h6>
+                                    <h6>{{ portfolioL.last }}</h6>
+                                    <h6>{{ (portfolioL.quantity*portfolioL.last).toFixed(2) }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="text-align: right;">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#buyModal" (click)="this.selected = i" style="margin-right: 10px;">Buy</button>
+                    <!-- [disabled]="!this.marketOpen" -->
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#sellModal" (click)="this.selected = i">Sell</button>
+                    <!-- [disabled]="!this.marketOpen" -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{(this.portfolio && this.portfolio.length!=0) && this.portfolio[this.selected].ticker}}</h5>
+                <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:20px">
+                Current Price: {{ (this.portfolio && this.portfolio.length!=0) && this.portfolio[this.selected].last || null}}
+                <br> Quantity
+                <input type='number' [(ngModel)]="quantity">
+            </div>
+            <div class="modal-footer">
+                <span>Total: {{(this.portfolio && this.portfolio.length!=0)  && (this.quantity*this.portfolio[this.selected].last).toFixed(2) || null}}</span>
+                <span style="float:right; position:absolute; right:20px">
+                    <button type="button" class="btn btn-success" (click)="buy(this.selected, this.quantity)"
+                        [disabled]="this.quantity<=0">Buy</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="sellModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{(this.portfolio && this.portfolio.length!=0) && this.portfolio[this.selected].ticker}}</h5>
+                <button type="button" #closebutton2 class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:20px">
+                Current Price: {{(this.portfolio && this.portfolio.length!=0) && this.portfolio[this.selected].last}}
+                <br> Quantity
+                <input type='number' [(ngModel)]="quantity">
+            </div>
+            <div class="modal-footer">
+                <span>Total: {{(this.portfolio && this.portfolio.length!=0) && (this.quantity*this.portfolio[this.selected].last).toFixed(2)}}</span>
+                <span style="float:right; position:absolute; right:20px">
+                    <button type="button" class="btn btn-success" (click)="sell(this.selected, this.quantity)"
+                        [disabled]="(this.portfolio && this.portfolio[this.selected]) && (this.quantity<=0 || this.quantity>this.portfolio[this.selected].quantity)">Sell</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

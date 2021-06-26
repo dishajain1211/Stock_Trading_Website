@@ -1,0 +1,43 @@
+<div class="container">
+    <div style="height: 75px;"></div>
+    <div class="p-1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <h1>My Watchlist</h1>
+        <br>
+    </div>
+
+    <div *ngIf="!isLoaded" class="is-loading" style="text-align: center;  margin-top: 50px;">
+        <mat-spinner diameter="50" style="display: inline;"></mat-spinner>
+    </div>
+    <div *ngIf="isLoaded">
+        <div class="alert alert-warning" *ngIf="empty" style="text-align: center; margin-top:50px">Currently you don't have any stock in your watchlist.
+        </div>
+
+        <div class="container" *ngFor="let watch of watchlist" style="margin-right: 0; margin-left: -10px;">
+            <div class="card" style="margin-bottom:10px" (click)="gotoPage(watch.ticker)">
+                <div class="card-body alert-dismissible">
+                    <div class="row">
+                        <div class="col-6">
+                            <h2>{{ watch.ticker }}</h2>
+                            <h5>{{ watch.name }}</h5>
+                        </div>
+                        <div class="col-6" style="text-align: right; padding:0; padding-right: 10px;" [ngClass]="(((watch.last - watch.prevClose).toFixed(2))==0)?'grey':(((watch.last - watch.prevClose).toFixed(2))<0)?'red':'green'">
+                            <h2>{{ watch.last }}</h2>
+                            <h5>
+                                <svg width="0.5em" height="0.5em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="((watch.last - watch.prevClose).toFixed(2))>0">
+                                <path
+                                    d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                            </svg>
+                                <svg width="0.5em" height="0.5em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="((watch.last - watch.prevClose).toFixed(2))<0">
+                                <path
+                                    d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                            </svg> {{(watch.last - watch.prevClose).toFixed(2)}} ({{((watch.last - watch.prevClose)*100/watch.prevClose).toFixed(2)}}%)</h5>
+                        </div>
+                    </div>
+                    <button type="button" style="padding: 5px 5px" class="close" data-dismiss="alert" (click)="unStar(watch.ticker)">&times;</button>
+                    <!-- <div (click)="unStar(watch.ticker)">XXXX</div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
